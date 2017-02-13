@@ -20,6 +20,10 @@
     "url": "https://github.com/mljs/simulated-annealing.git"
   },
   "keywords": [
+    "simulated",
+    "annealing",
+    "metaheuristic",
+    "optimization",
     "machine",
     "learning",
     "data",

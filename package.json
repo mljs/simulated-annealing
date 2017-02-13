@@ -11,8 +11,8 @@
     "eslint": "eslint src test",
     "eslint-fix": "npm run eslint -- --fix",
     "test": "npm run test-mocha && npm run eslint",
-    "test-cov": "istanbul cover node_modules/.bin/_mocha -- --require should --reporter dot --recursive",
-    "test-travis": "istanbul cover node_modules/.bin/_mocha --report lcovonly -- --require should --reporter dot --recursive",
+    "test-cov": "istanbul cover node_modules/.bin/_mocha -- --require should --reporter dot --recursive && codecov",
+    "test-travis": "istanbul cover node_modules/.bin/_mocha --report lcovonly -- --require should --reporter dot --recursive && codecov",
     "test-mocha": "mocha --require should --reporter mocha-better-spec-reporter"
   },
   "repository": {
@@ -26,7 +26,7 @@
     "mining",
     "datamining"
   ],
-  "author": "Miguel Asencio <maasencioh@gmail.com> (https://github.com/Miguel Asencio)",
+  "author": "Miguel Asencio <maasencioh@gmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/mljs/simulated-annealing/issues"
@@ -34,6 +34,7 @@
   "runkitExampleFilename": "./runkit.js",
   "homepage": "https://github.com/mljs/simulated-annealing#readme",
   "devDependencies": {
+    "codecov": "^1.0.1",
     "eslint": "^3.12.2",
     "eslint-config-cheminfo": "^1.6.0",
     "eslint-plugin-no-only-tests": "^1.1.0",

@@ -22,6 +22,10 @@ const simulatedAnnealing = require('ml-simulated-annealing');
 
 Or test it in [Runkit](https://runkit.com/npm/ml-simulated-annealing)
 
+## Bibliography
+
+[1]   Yang, W. Y.; Cao, W.; Chung, T.-S.; Morris, J. Optimization. In Applied Numerical Methods Using MATLAB®; 2005; Vol. 47,         pp. 334–338.
+
 ## License
 
 [MIT](./LICENSE)

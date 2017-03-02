@@ -17,6 +17,34 @@ function simulatedAnnealing(objectiveFunction, options) {
     // Maximum number of iterations
     var x = options.initialGuess;
     var fx = objectiveFunction(x);
+function simulatedAnnealing(options) {
+    var objetiveFunction = options[0];
+    var initialGuess = options[1];
+    var lowerBound = options[2];
+    var upperBound = options[3];
+    if (options.length < 4 || options.length > 7) {
+        return 'The function need between 4 to 7 inputs arguments';
+    }
+    if (options.length < 7) {
+        var toleranceFunction = 8E-12;
+    }
+    else {
+        toleranceFunction = options[6];
+    }
+    if (options.length < 6) {
+        var quenchingFactor = 1;
+    }
+    else {
+        quenchingFactor = options[5];
+    }
+    if (options.length < 5) {
+        var iterationsNumber = 100;
+    }
+    else {
+        iterationsNumber = options[4];
+    }
+    var x = initialGuess;
+    var fx = initialGuess(x);
     var xi = x;
     var fi = fx;
     for (var k = 0; k < options.maxIterations; k++) {

@@ -53,7 +53,7 @@ function simulatedAnnealing(options) {
         var dx = muInv(Matrix.rand(x.rows, x.columns).multiply(2).add(-1), mu).multiply((options.upperBound - options.lowerBound));
         var x1 = x.add(dx);
         for (var i = 0; i < x1.rows; i++) {
-            x1[i][0] = (x1[i][0] < options.lowerBound[i][0] ? options.lowerBound[i][0] : 0) + (options.lowerBound[i][0] <= x1[i][0] && x1[i][0] <= options.upperBound[i][0] ? x1[i][0] : 0) + (options.upperBound[i][0] < x1[i][0] ? options.upperBound[i][0] : 0);
+            x1[i][0] = (x1[i][0] < l[i][0] ? l[i][0] : 0) + (l[i][0] <= x1[i][0] && x1[i][0] <= u[i][0] ? x1[i][0] : 0) + (u[i][0] < x1[i][0] ? u[i][0] : 0);
         }
 
         var fx1 = objectiveFunction(x1);

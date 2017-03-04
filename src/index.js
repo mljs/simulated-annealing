@@ -3,52 +3,36 @@
 const Matrix = require('ml-matrix');
 const Algebra = Matrix.algebra;
 
-function simulatedAnnealing(options) {
-    var f = options[0]; // Objective function
-    var x0 = options[1]; //Initial guess
-    var l = options[2]; // Lower bound
-    var u = options[3]; // Upper bound
-    if (options.length < 4 || options.length > 7) {
-        return 'The function need between 4 to 7 inputs arguments';
-    }
-    if (options.length < 7) {
-        var tolFun = 8E-12;
-    } else {
-        tolFun = options[6];
-    }
+const defaultOptions = {
+    initialGuess: 5,
+    lowerBound: 0,
+    upperBound: 10,
+    tolerance: 8E-12,
+    quenching: 1,
+    maxIterations: 100
+};
 
-    // Tolerance function
-    if (options.length < 6) {
-        var q = 1;
-    } else {
-        q = options[5];
-    }
+function simulatedAnnealing(objectiveFunction, options) {
+    options = Object.assign({}, defaultOptions, options);
 
-    // Quenching factor
-    if (options.length < 5) {
-        var kmax = 100;
-    } else {
-        kmax = options[4];
-    }
-
-    // Maximun number of iterations
-    var x = x0;
-    var fx = f(x);
+    // Maximum number of iterations
+    var x = options.initialGuess;
+    var fx = objectiveFunction(x);
     var xi = x;
     var fi = fx;
-    for (var k = 0; k < kmax; k++) {
-        var ti = Math.pow(k / kmax, q);
+    for (var k = 0; k < options.maxIterations; k++) {
+        var ti = Math.pow(k / options.maxIterations, options.quenching);
         var mu = Math.pow(10, ti * 100);
-        var dx = muInv(Algebra.random(x.rows, x.columns).multiply(2).add(-1), mu).multiply((Algebra.subtract(u, l)));
+        var dx = muInv(Algebra.random(x.rows, x.columns).multiply(2).add(-1), mu).multiply((Algebra.subtract(options.upperBound, options.lowerBound)));
         var x1 = Algebra.add(x, dx);
         for (var i = 0; i < x1.rows; i++) {
-            x1[i][0] = (x1[i][0] < l[i][0] ? l[i][0] : 0) + (l[i][0] <= x1[i][0] && x1[i][0] <= u[i][0] ? x1[i][0] : 0) + (u[i][0] < x1[i][0] ? u[i][0] : 0);
+            x1[i][0] = (x1[i][0] < options.lowerBound[i][0] ? options.lowerBound[i][0] : 0) + (options.lowerBound[i][0] <= x1[i][0] && x1[i][0] <= options.upperBound[i][0] ? x1[i][0] : 0) + (options.upperBound[i][0] < x1[i][0] ? options.upperBound[i][0] : 0);
         }
 
-        var fx1 = f(x1);
+        var fx1 = objectiveFunction(x1);
         var df = Algebra.subtract(fx1, fx);
         for (i = 0; i < df.rows; i++) {
-            if (df[i][0] < 0 || Math.random < (Math.exp((-ti * df[i][0]) / (Math.abs(fx[i][0]) + 8E-12) / tolFun))) {
+            if (df[i][0] < 0 || Math.random < (Math.exp((-ti * df[i][0]) / (Math.abs(fx[i][0]) + 8E-12) / options.tolerance))) {
                 x[i][0] = x1[i][0];
                 fx[i][0] = fx1[i][0];
             }
@@ -62,6 +46,7 @@ function simulatedAnnealing(options) {
     }
     return [xi, fi];
 }
+
 function muInv(y, mu) {
     var x = Algebra.zeros(y.rows, y.columns);
     for (var i = 0; i < y.rows; i++) {

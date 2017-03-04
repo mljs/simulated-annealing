@@ -1,7 +1,6 @@
 'use strict';
 
 const Matrix = require('ml-matrix');
-const Algebra = Matrix.algebra;
 
 const defaultOptions = {
     initialGuess: 5,
@@ -23,14 +22,14 @@ function simulatedAnnealing(objectiveFunction, options) {
     for (var k = 0; k < options.maxIterations; k++) {
         var ti = Math.pow(k / options.maxIterations, options.quenching);
         var mu = Math.pow(10, ti * 100);
-        var dx = muInv(Algebra.random(x.rows, x.columns).multiply(2).add(-1), mu).multiply((Algebra.subtract(options.upperBound, options.lowerBound)));
-        var x1 = Algebra.add(x, dx);
+        var dx = muInv(Matrix.rand(x.rows, x.columns).multiply(2).add(-1), mu).multiply((options.upperBound - options.lowerBound));
+        var x1 = x.add(dx);
         for (var i = 0; i < x1.rows; i++) {
             x1[i][0] = (x1[i][0] < options.lowerBound[i][0] ? options.lowerBound[i][0] : 0) + (options.lowerBound[i][0] <= x1[i][0] && x1[i][0] <= options.upperBound[i][0] ? x1[i][0] : 0) + (options.upperBound[i][0] < x1[i][0] ? options.upperBound[i][0] : 0);
         }
 
         var fx1 = objectiveFunction(x1);
-        var df = Algebra.subtract(fx1, fx);
+        var df = fx1.subtract(fx);
         for (i = 0; i < df.rows; i++) {
             if (df[i][0] < 0 || Math.random < (Math.exp((-ti * df[i][0]) / (Math.abs(fx[i][0]) + 8E-12) / options.tolerance))) {
                 x[i][0] = x1[i][0];
@@ -48,7 +47,7 @@ function simulatedAnnealing(objectiveFunction, options) {
 }
 
 function muInv(y, mu) {
-    var x = Algebra.zeros(y.rows, y.columns);
+    var x = Matrix.zeros(y.rows, y.columns);
     for (var i = 0; i < y.rows; i++) {
         x[i][0] = (((Math.pow(1 + mu, Math.abs(y[i][0])) - 1) / mu)) * Math.sign(y[i][0]);
     }

@@ -3,54 +3,64 @@
 const Matrix = require('ml-matrix');
 
 const defaultOptions = {
-    initialGuess: 0,
+    initialGuess: undefined,
     lowerBound: -5,
     upperBound: 5,
     maxIterations: 100,
     quenching: 1,
     tolerance: 8E-12,
 };
-function simulatedAnnealing(objectiveFunction, inputs) {
-    inputs = Object.assign({}, defaultOptions, inputs);
 
-    var x = inputs.initialGuess;
-    var fx = objectiveFunction(x);
-    var xi = x;
-    var fi = fx;
-    for (var k = 0; k < inputs.maxIterations; k++) {
-        var ti = Math.pow(k / inputs.maxIterations, inputs.quenching);
-        var mu = Math.pow(10, ti * 100);
-        var dx = muInv(Matrix.rand(x.rows, x.columns).multiply(2).add(-1), mu).multiply((inputs.upperBound - inputs.lowerBound));
-        var x1 = x.clone().add(dx);
-        for (var i = 0; i < x1.rows; i++) {
-            x1[i][0] = (x1[i][0] < l[i][0] ? l[i][0] : 0) + (l[i][0] <= x1[i][0] && x1[i][0] <= u[i][0] ? x1[i][0] : 0) + (u[i][0] < x1[i][0] ? u[i][0] : 0);
-        }
-        var fx1 = objectiveFunction(x1);
-        var df = fx1.clone().subtract(fx);
-        for (i = 0; i < df.rows; i++) {
-            if (df[i][0] < 0 || Math.random < (Math.exp((-ti * df[i][0]) / (Math.abs(fx[i][0]) + 8E-12) / inputs.tolerance))) {
-                x[i][0] = x1[i][0];
-                fx[i][0] = fx1[i][0];
+function simulatedAnnealing(objectiveFunction, options) {
+    options = Object.assign({}, defaultOptions, options);
+
+    // initial variables
+    var params = options.initialGuess;
+    var evaluatedFunction = objectiveFunction(params);
+    var oldParam = params;
+
+    for (var k = 0; (k < options.maxIterations) && (options.tolerance < evaluatedFunction); k++) {
+        // constant for step
+        var tempInverse = Math.pow(k / options.maxIterations, options.quenching);
+        var mu = Math.pow(10, tempInverse * 100);
+
+        // step for parameters
+        var uniformMatrix = (Matrix.rand(params.rows, params.columns)).multiply(2).add(-1);
+        var paramDiff = muInverse(uniformMatrix, mu);
+
+        // next step to evaluate
+        var newParam = oldParam.sum(paramDiff);
+
+        // evaluate difference
+        var functionDiff = objectiveFunction(newParam) - objectiveFunction(oldParam);
+        if (functionDiff < 0) {
+            params = newParam;
+
+            if (objectiveFunction(params) < evaluatedFunction) {
+                oldParam = params;
+                evaluatedFunction = objectiveFunction(oldParam);
             }
-        }
-        for (i = 0; i < fx.rows; i++) {
-            if (fx[i][0] < fi[i][0]) {
-                xi[i][0] = x[i][0];
-                fi[i][0] = fx1[i][0];
-            }
+        } else {
+            /*
+             {generate a uniform random number z of U[0,1] and set x ← x1 only in case
+             (7.1.24) q
+             z < p(taking the step  x) = exp(−(k/kmax)  f/|f (x)|/εf )
+             */
         }
     }
-    return [xi, fi];
+
+    return {
+        parameters: oldParam,
+        error: evaluatedFunction
+    };
 }
 
-function muInv(y, mu) {
-    var x = Matrix.zeros(y.rows, y.columns);
-    for (var i = 0; i < y.rows; i++) {
-        x[i][0] = (((Math.pow(1 + mu, Math.abs(y[i][0])) - 1) / mu)) * Math.sign(y[i][0]);
-    }
-    return x;
+function muInverse(input, mu) {
+    var response = input.clone();
+    response.apply((i, j) => {
+        this[i][j] = (((Math.pow(1 + mu, Math.abs(this[i][j])) - 1) / mu)) * Math.sign(this[i][j]);
+    });
+    return response;
 }
-
-
 
 module.exports = simulatedAnnealing;

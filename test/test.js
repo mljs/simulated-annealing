@@ -18,8 +18,8 @@ describe('simulated-annealing test', function () {
 
         var response = simulatedAnnealing(polynomialMatrix, {
             initialGuess: new Matrix([[0], [0]]),
-            lowerBound: -5,
-            upperBound: 5,
+            lowerBound: new Matrix([[-5], [-5]]),
+            upperBound: new Matrix([[5], [5]])
             maxIterations: 100,
             quenching: 1,
             tolerance: 1E-09

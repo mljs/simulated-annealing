@@ -8,7 +8,7 @@ const defaultOptions = {
     upperBound: 5,
     maxIterations: 100,
     quenching: 1,
-    tolerance: 8E-12,
+    tolerance: 8E-12
 };
 
 function simulatedAnnealing(objectiveFunction, options) {

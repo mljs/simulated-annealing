@@ -11,9 +11,7 @@ describe('simulated-annealing test', function () {
         }
 
         function polynomialMatrix(a) {
-            var y = Matrix.zeros(a.rows, a.columns);
-            for (var i = 0; i < a.rows; i++) {
-                y[i][0] = polynomial(a[0][0]) + polynomial(a[1][0]);
+            var y = polynomial(a[0][0]) + polynomial(a[1][0]);
             }
             return y;
         }

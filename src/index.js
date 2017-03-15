@@ -41,11 +41,11 @@ function simulatedAnnealing(objectiveFunction, options) {
                 evaluatedFunction = objectiveFunction(oldParam);
             }
         } else {
-            /*
-             {generate a uniform random number z of U[0,1] and set x ← x1 only in case
-             (7.1.24) q
-             z < p(taking the step  x) = exp(−(k/kmax)  f/|f (x)|/εf )
-             */
+            var rand = Math.random();
+            var stepProbability = -tempInverse * (functionDiff / (Math.abs(evaluatedFunction) * options.tolerance));
+            if (rand < Math.exp(stepProbability)) {
+                params = newParam;
+            }
         }
     }
 

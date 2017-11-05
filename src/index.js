@@ -1,27 +1,25 @@
 'use strict';
 
-const Matrix = require('ml-matrix');
-
-const defaultOptions = {
-    initialGuess: undefined,
-    lowerBound: -5,
-    upperBound: 5,
-    maxIterations: 100,
-    quenching: 1,
-    tolerance: 8E-12
-};
+const Matrix = require('ml-matrix').Matrix;
 
 function simulatedAnnealing(objectiveFunction, options) {
-    options = Object.assign({}, defaultOptions, options);
+    let {
+        initialGuess: params,
+        // todo: those values are unused...
+        // lowerBound = -5,
+        // upperBound = 5,
+        maxIterations = 100,
+        quenching = 1,
+        tolerance = 8e-12
+    } = options;
 
     // initial variables
-    var params = options.initialGuess;
     var evaluatedFunction = objectiveFunction(params);
     var oldParam = params;
 
-    for (var k = 0; (k < options.maxIterations) && (options.tolerance < evaluatedFunction); k++) {
+    for (var k = 0; (k < maxIterations) && (tolerance < evaluatedFunction); k++) {
         // constant for step
-        var tempInverse = Math.pow(k / options.maxIterations, options.quenching);
+        var tempInverse = Math.pow(k / maxIterations, quenching);
         var mu = Math.pow(10, tempInverse * 100);
 
         // step for parameters
@@ -42,7 +40,7 @@ function simulatedAnnealing(objectiveFunction, options) {
             }
         } else {
             var rand = Math.random();
-            var stepProbability = -tempInverse * (functionDiff / (Math.abs(evaluatedFunction) * options.tolerance));
+            var stepProbability = -tempInverse * (functionDiff / (Math.abs(evaluatedFunction) * tolerance));
             if (rand < Math.exp(stepProbability)) {
                 params = newParam;
             }

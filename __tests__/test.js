@@ -1,6 +1,6 @@
 'use strict';
 
-const Matrix = require('ml-matrix');
+const Matrix = require('ml-matrix').Matrix;
 const simulatedAnnealing = require('..');
 
 describe('simulated-annealing test', function () {
@@ -11,21 +11,19 @@ describe('simulated-annealing test', function () {
         }
 
         function polynomialMatrix(a) {
-            var y = polynomial(a[0][0]) + polynomial(a[1][0]);
-            }
-            return y;
+            return polynomial(a[0][0]) + polynomial(a[1][0]);
         }
 
         var response = simulatedAnnealing(polynomialMatrix, {
             initialGuess: new Matrix([[0], [0]]),
             lowerBound: new Matrix([[-5], [-5]]),
-            upperBound: new Matrix([[5], [5]])
+            upperBound: new Matrix([[5], [5]]),
             maxIterations: 100,
             quenching: 1,
             tolerance: 1E-09
         });
 
-        response.parameters.should.be.deepEqual(new Matrix([[0], [0]]));
-        response.error.should.be.deepEqual(new Matrix([[0], [0]]));
+        expect(response.parameters).toEqual(new Matrix([[0], [0]]));
+        expect(response.error).toEqual(0);
     });
 });

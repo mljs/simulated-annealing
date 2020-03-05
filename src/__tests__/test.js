@@ -1,7 +1,14 @@
-import { myModule } from '..';
+import simulatedAnnealing from '..';
+import polinom from './polinom';
 
-describe('test myModule', () => {
-  it('should return 42', () => {
-    expect(myModule()).toEqual(42);
-  });
-});
+let simulatedAnnealingInputs = {
+  goalFunction : polinom,
+  guess : [-3],
+  neighbour : {
+  lowerBound : [-5] ,
+  upperBound : [5],
+  },
+  maxIterations : 100,
+  quenchingFactor : 2
+}
+let simulatedAnnealingOutputs = simulatedAnnealing(simulatedAnnealingInputs);

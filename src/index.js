@@ -11,13 +11,16 @@ import temperature from './temperature';
  * @param {number} inputs.maxIterations - Maximum number of itarations
  * @param {number} inputs.quenchingFactor - Value that determine the decay rate of probability to accept a candidate that is not improving the goal function output
  */
-export default function simulatedAnnealing(inputs){
+export function simulatedAnnealing(inputs){
   let current = inputs.guess
   let range = inputs.neighbour.upperBound.map((x,i) => x - inputs.neighbour.lowerBound[i]);
-  let globalOptimum = inputs.goalFunction(current), optimum, optimumCandidate;
+  let globalOptimum = inputs.goalFunction(current)
+  console.log(globalOptimum, 'globalOptimum');
+  let optimum;
+  let optimumCandidate;
   for (let iteration = 0; iteration < inputs.maxIterations; iteration++){
-      let T = temperature(inputs.maxIterations, iteration);
-      let [candidate, information]  = candidateGenerator(inputs.neighbour, range, current, T, inputs.quenchingFactor);
+      let temp = temperature(inputs.maxIterations, iteration);
+      let candidate  = candidateGenerator(inputs.neighbour, range, current, temp, inputs.quenchingFactor);
       let candidateEvaluation = inputs.goalFunction(candidate)
       let df = candidateEvaluation - globalOptimum;
       if (df < 0){ 
@@ -26,7 +29,7 @@ export default function simulatedAnnealing(inputs){
           globalOptimum = candidateEvaluation
           optimumCandidate = candidate;
       }
-      else if (acceptableProbability(df, T,inputs.quenchingFactor) > Math.random()){
+      else if (acceptableProbability(df, temp ,inputs.quenchingFactor) > Math.random()){
           current = candidate;
           optimum = candidateEvaluation;
       }

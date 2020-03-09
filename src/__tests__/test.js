@@ -1,6 +1,5 @@
-import simulatedAnnealing from '..';
-import polinom from './polinom';
-
+import simulatedAnnealing from '../index';
+import polinom from '../polinom';
 let simulatedAnnealingInputs = {
   goalFunction : polinom,
   guess : [-3],
@@ -11,4 +10,14 @@ let simulatedAnnealingInputs = {
   maxIterations : 100,
   quenchingFactor : 2
 }
-let simulatedAnnealingOutputs = simulatedAnnealing(simulatedAnnealingInputs);
+let error = simulatedAnnealing(simulatedAnnealingInputs)[1] - (-78.33232965678742);
+it('parameterError should be zero for an exact fit', () => {
+  expect(error
+    ,
+  ).toBeCloseTo(0, 3);
+});
+
+
+
+
+      

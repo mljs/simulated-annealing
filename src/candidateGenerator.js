@@ -9,9 +9,8 @@
 export default function candidateGenerator(neighbour,range, current, temp, quienching){   
     let dx = [];
     let newCandidate = []
-    //let mu = Math.pow(10, 10 * (Math.pow((1 / temp), quienching)));
     for (let i = 0; i < current.length; i++) {
-        let y = Math.random() * (range) + neighbour.lowerBound[i];
+        let y = Math.random() * range + neighbour.lowerBound[i];
         dx[i] = y  * Math.exp(-quienching/ temp) 
         newCandidate[i] = current[i] + dx[i];
         newCandidate[i] = (newCandidate[i] < neighbour.lowerBound[i] ? neighbour.lowerBound[i] + (neighbour.lowerBound[i] - newCandidate)  : 0)

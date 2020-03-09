@@ -7,6 +7,6 @@ export default function temperature(
     maxIteration,
      iteration
      ){
-    let T = maxIteration / ((iteration * 0.01) + 1 );
+    let T = maxIteration / (iteration * 0.01 + 1) ;
     return T;
 };

@@ -1,4 +1,5 @@
-import { optimizeSingleGaussian, singleGaussian } from '../index';
+import { optimizeSingleGaussian } from '../optimizeSingleGaussian'
+import { singleGaussian } from '../singleGaussian';
 
 let nbPoints = 31;
 let tFactor = 0.1;

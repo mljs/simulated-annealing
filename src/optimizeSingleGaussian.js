@@ -1,7 +1,5 @@
-import simulatedAnnealing from 'simulatedAnnealing';
-
 import { singleGaussian } from './singleGaussian';
-import simulatedAnnealing from '.';
+import { simulatedAnnealing } from './index';
 
 /**
  * Fits a set of points to a gaussian bell. Returns the mean of the peak, the std and the height of the signal.

@@ -1,4 +1,4 @@
-import simulatedAnnealing from '../index';
+import { simulatedAnnealing } from '../index';
 import polinom from '../polinom';
 let simulatedAnnealingInputs = {
   goalFunction : polinom,

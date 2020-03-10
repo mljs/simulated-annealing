@@ -5,8 +5,11 @@
  * @param {*} quenchingFactor - constant value that determine the decay rate of probability.
  */
 
- 
-export default function acceptableProbability(functionDelta, temperature, quenchingFactor){
-    let probability = Math.exp( - ( functionDelta * quenchingFactor ) / (temperature)); 
-    return probability
+export default function acceptableProbability(
+  functionDelta,
+  temperature,
+  quenchingFactor,
+) {
+  let probability = Math.exp(-(functionDelta * quenchingFactor) / temperature);
+  return probability;
 }

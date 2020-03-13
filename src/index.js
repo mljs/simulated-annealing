@@ -42,5 +42,5 @@ export function simulatedAnnealing(inputs) {
       optimum = candidateEvaluation;
     }
   }
-  return [optimumCandidate, globalOptimum];
+  return {optimumCandidate, globalOptimum};
 }

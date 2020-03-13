@@ -17,7 +17,8 @@ let simulatedAnnealingInputs = {
   maxIterations: 2000,
   quenchingFactor: 2,
 };
-let error = simulatedAnnealing(simulatedAnnealingInputs)[1] - -78.33232965678742;
+let result = simulatedAnnealing(simulatedAnnealingInputs)
+let error = -78.33232965678742 - result.globalOptimum;
 test('parameterError should be zero for an exact fit', () => {
   expect(error).toBeCloseTo(0, 2);
 });
